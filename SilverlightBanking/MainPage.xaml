@@ -1,0 +1,492 @@
+﻿<UserControl x:Class="SilverlightBanking.MainPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:SilverlightBanking"
+             xmlns:converters="clr-namespace:SilverlightBanking.Converters"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <UserControl.Resources>
+        <converters:CurrencyConverter x:Key="CurrencyConverter" />
+        <converters:AmountToColorConverter x:Key="AmountToColorConverter" />
+        <DataTemplate x:Key="SimpleTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{Binding ActivityDate}" />
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           FontWeight="Bold"
+                           Text="{Binding Beneficiary}" />
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Text="{Binding Amount}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding ActivityDescription}" />
+                <Button Grid.Row="1"
+                        Grid.Column="2"
+                        Content="Details ..."
+                        Click="DetailButton_Click"
+                        Width="60" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:AccountActivity">
+            <Border BorderBrush="LightGray"
+                    BorderThickness="0"
+                    CornerRadius="2">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="1.207,0.457"
+                                         StartPoint="-0.017,0.467">
+                        <GradientStop Color="#FF807777" />
+                        <GradientStop Color="White"
+                                      Offset="0.949" />
+                    </LinearGradientBrush>
+                </Border.Background>
+            <Grid Width="580">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.RowSpan="2"
+                               Text="{Binding ActivityDate}">
+                    </TextBlock>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Text="{Binding Beneficiary}"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
+                               Foreground="{Binding Amount, Converter={StaticResource AmountToColorConverter}}">
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding ActivityDescription}"/>
+                    <TextBlock x:Name="DetailsTextBlock"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               Text="Details..."
+                               Tag="{Binding ActivityId}"
+                               MouseLeftButtonDown="DetailButton_Click"
+                               TextDecorations="Underline"
+                               Foreground="Blue">
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="local:RecurringAccountActivity">
+            <Border BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    Background="LightGreen"
+                    Margin="0 3 0 1"
+                    Padding="2">
+                <Grid Width="580">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.RowSpan="2"
+                               Text="{Binding ActivityDate}">
+                    </TextBlock>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Text="{Binding Beneficiary}"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Amount, Converter={StaticResource CurrencyConverter}}"
+                               Foreground="{Binding Amount, Converter={StaticResource AmountToColorConverter}}">
+                    </TextBlock>
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <TextBlock Text="{Binding ActivityDescription}">
+                        </TextBlock>
+                        <TextBlock Text=" - "></TextBlock>
+                        <TextBlock Text="{Binding RecurringActivityDescription}">
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock x:Name="DetailsTextBlock"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               Text="Details..."
+                               Tag="{Binding ActivityId}"
+                               MouseLeftButtonDown="DetailButton_Click"
+                               TextDecorations="Underline"
+                               Foreground="Blue">
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot"
+          Background="LightGray">
+        <Grid x:Name="MainGrid"
+              HorizontalAlignment="Left"
+              Height="600"
+              VerticalAlignment="Top"
+              Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="1"
+                    Grid.ColumnSpan="2">
+                <Border.Background>
+                    <SolidColorBrush Color="DarkGray"></SolidColorBrush>
+                </Border.Background>
+            </Border>
+
+            <TextBlock x:Name="Title"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Left"
+                       Height="40"
+                       Margin="10,10,0,0"
+                       TextWrapping="Wrap"
+                       Text="Bank - Account Overview"
+                       VerticalAlignment="Top"
+                       Width="780"
+                       FontSize="26.667" />
+            <TextBlock HorizontalAlignment="Left"
+                       Margin="10,10,0,0"
+                       Grid.Row="1"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Top"
+                       Width="55"
+                       Height="20">
+                <Run Text="Actions" />
+                <LineBreak />
+                <Run />
+            </TextBlock>
+            <Button x:Name="CalculateButton"
+                    Content="Calculate loans ..."
+                    HorizontalAlignment="Left"
+                    Margin="70,8,0,0"
+                    Grid.Row="1"
+                    VerticalAlignment="Top"
+                    Width="115"
+                    Click="CalculateButton_Click" />
+            <Grid x:Name="OwnerDetailGrid"
+                  HorizontalAlignment="Left"
+                  Height="500"
+                  VerticalAlignment="Top"
+                  Width="300"
+                  Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="5*" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="OwnerIDTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"
+                           Text="Owner ID"
+                           VerticalAlignment="Top"
+                           Height="15" />
+                <TextBlock x:Name="FirstNameTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="2"
+                           TextWrapping="Wrap"
+                           Text="First Name"
+                           VerticalAlignment="Top"
+                           Height="15" />
+                <TextBlock x:Name="LastNameTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="3"
+                           TextWrapping="Wrap"
+                           Text="Last Name"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="AddressTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="4"
+                           TextWrapping="Wrap"
+                           Text="Address"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="ZipCodeTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="5"
+                           TextWrapping="Wrap"
+                           Text="Zip Code"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="CityTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="6"
+                           TextWrapping="Wrap"
+                           Text="City"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="StateTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="7"
+                           TextWrapping="Wrap"
+                           Text="State"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="CountryTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="8"
+                           TextWrapping="Wrap"
+                           Text="Country"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="BirthdayTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="9"
+                           TextWrapping="Wrap"
+                           Text="Birthday"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="CustomerSinceTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="10"
+                           TextWrapping="Wrap"
+                           Text="Customer since"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <Button x:Name="EditDetailsButtonTitle"
+                        Content="Edit details ..."
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,10,0"
+                        Grid.Row="11"
+                        VerticalAlignment="Top"
+                        Click="EditDetailsButtonTitle_Click" />
+                <TextBlock x:Name="CurrentBalanceTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="12"
+                           TextWrapping="Wrap"
+                           Text="Current balance"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="LastActyvityTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="13"
+                           TextWrapping="Wrap"
+                           Text="Last actyvity"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="AmountTitle"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="14"
+                           TextWrapping="Wrap"
+                           Text="Amount"
+                           VerticalAlignment="Top"
+                           Height="16" />
+
+                
+                <TextBlock x:Name="OwnerID"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding OwnerId}"
+                           VerticalAlignment="Top"
+                           Height="15" />
+                <TextBlock x:Name="FirstName"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding FirstName}"
+                           VerticalAlignment="Top"
+                           Height="15" />
+                <TextBlock x:Name="LastName"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding LastName}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="Address"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="4"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding Address}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="ZipCode"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="5"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding ZipCode}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="City"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="6"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding City}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="State"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="7"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding State}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="Country"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="8"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding Country}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="Birthday"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="9"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding BirthDate}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <TextBlock x:Name="CustomerSince"
+                           HorizontalAlignment="Left"
+                           Margin="10,2,0,0"
+                           Grid.Row="10"
+                           Grid.Column="1"
+                           TextWrapping="Wrap"
+                           Text="{Binding CustomerSince}"
+                           VerticalAlignment="Top"
+                           Height="16" />
+                <Image HorizontalAlignment="Left" 
+                       Height="100" 
+                       Margin="10,10,0,0" 
+                       VerticalAlignment="Top" 
+                       Width="100" 
+                       Source="{Binding ImageName}"/>
+
+              <TextBlock x:Name="CurrentBalance"
+                         HorizontalAlignment="Left"
+                         Margin="10,2,0,0"
+                         Grid.Row="12"
+                         Grid.Column = "1"
+                         TextWrapping="Wrap"
+                         Text="{Binding CurrentBalance, Converter={StaticResource CurrencyConverter}}"
+                         Foreground="{Binding CurrentBalance, Converter={StaticResource AmountToColorConverter}}"
+                         VerticalAlignment="Top"
+                         Height="16" />
+              <TextBlock x:Name="LastActivityDate"
+                         HorizontalAlignment="Left"
+                         Margin="10,2,0,0"
+                         Grid.Row="13"
+                         Grid.Column = "1"
+                         TextWrapping="Wrap"
+                         Text="{Binding LastActivityDate}"
+                         VerticalAlignment="Top"
+                         Height="16" />
+              <TextBlock x:Name="Amount"
+                         HorizontalAlignment="Left"
+                         Margin="10,2,0,0"
+                         Grid.Row="14"
+                         Grid.Column = "1"
+                         TextWrapping="Wrap"
+                         Text="{Binding LastActivityAmount}"
+                         VerticalAlignment="Top"
+                         Height="16" />
+            <TextBlock HorizontalAlignment="Left"
+                        Margin="10,2,0,0"
+                        Grid.Row="15"
+                        Grid.Column="1"
+                        TextWrapping="Wrap"
+                        Text="{Binding NoMoreCustomerSince, TargetNullValue='NA'}"
+                        VerticalAlignment="Top" />
+            </Grid>
+            <ListBox x:Name="AccountActivitiesListBox"
+                     Grid.Column="1"
+                     HorizontalAlignment="Left"
+                     Height="500"
+                     Grid.Row="2"
+                     VerticalAlignment="Top"
+                     Background="LightGray">
+        </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

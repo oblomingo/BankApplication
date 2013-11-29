@@ -1,0 +1,95 @@
+﻿<controls:ChildWindow x:Class="SilverlightBanking.LoanCalculation"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+                      Width="400"
+                      Height="300"
+                      Title="LoanCalculation">
+    <Grid x:Name="LayoutRoot"
+          Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Button x:Name="OKButton"
+                Content="OK"
+                Click="OKButton_Click"
+                Width="75"
+                Height="23"
+                HorizontalAlignment="Right"
+                Margin="0,12,0,0"
+                Grid.Row="1" />
+        <Slider x:Name="AmountSlider"
+                HorizontalAlignment="Left"
+                Margin="9,76,0,0"
+                VerticalAlignment="Top"
+                Width="289"
+                Height="30"
+                Minimum="10000"
+                Maximum="1000000"
+                SmallChange="1"
+                LargeChange="1"
+                UseLayoutRounding="True"/>
+        <Slider x:Name="MounthsNumberSlider"
+                HorizontalAlignment="Left"
+                Margin="9,131,0,0"
+                VerticalAlignment="Top"
+                Width="289"
+                Height="30"
+                Minimum="1"
+                Maximum="100" />
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="10,0,0,0"
+                   TextWrapping="Wrap"
+                   Text="Calculate loan payback amount"
+                   VerticalAlignment="Top"
+                   FontSize="18.667"
+                   Width="358" />
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="10,32,0,0"
+                   TextWrapping="Wrap"
+                   Text="Current interest:"
+                   VerticalAlignment="Top" />
+        <TextBlock x:Name="InterestRate"
+                   HorizontalAlignment="Left"
+                   Margin="108,32,0,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="9,55,0,0"
+                   TextWrapping="Wrap"
+                   Text="Select requested amount:"
+                   VerticalAlignment="Top"
+                   Width="358" />
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="9,111,0,0"
+                   TextWrapping="Wrap"
+                   Text="Select number of mounths:"
+                   VerticalAlignment="Top"
+                   Width="358" />
+        <TextBlock x:Name="ResultTextBlock"
+                   HorizontalAlignment="Left"
+                   Margin="108,187,0,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top"
+                   Height="29"
+                   Width="150"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Foreground="#FF1E831E" />
+        <TextBlock x:Name="AmountValueTextBlock"
+                   HorizontalAlignment="Left"
+                   Margin="303,84,0,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top"
+                   Text="{Binding ElementName=AmountSlider, Path=Value}" />
+        <TextBlock x:Name="MounthNumberTextBlock"
+                   HorizontalAlignment="Left"
+                   Margin="303,136,0,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top"
+                   Text="{Binding ElementName=MounthsNumberSlider, Path=Value}" />
+        <Button x:Name="CalculateButton" Content="Calculate" HorizontalAlignment="Left" Margin="144,160,0,0" VerticalAlignment="Top" Width="75"
+                Click="CalculateButton_Click" />
+    </Grid>
+</controls:ChildWindow>
