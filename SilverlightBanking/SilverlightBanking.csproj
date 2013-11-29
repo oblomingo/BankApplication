@@ -106,6 +106,9 @@
     <Compile Include="Converters\AmountToColorConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Dictionaries\EnglishDictionary.cs" />
+    <Compile Include="Dictionaries\LithuanianDictionary.cs" />
+    <Compile Include="Extensions\TranslatorExtension.cs" />
     <Compile Include="LoanCalculation.xaml.cs">
       <DependentUpon>LoanCalculation.xaml</DependentUpon>
     </Compile>

@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:SilverlightBanking"
              xmlns:converters="clr-namespace:SilverlightBanking.Converters"
+             xmlns:extensions="clr-namespace:SilverlightBanking.Extensions"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="600">
@@ -174,17 +175,13 @@
                     <SolidColorBrush Color="DarkGray"></SolidColorBrush>
                 </Border.Background>
             </Border>
-
-            <TextBlock x:Name="Title"
+            <TextBlock x:Name="TitleTextBlock"
+                       Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       HorizontalAlignment="Left"
-                       Height="40"
-                       Margin="10,10,0,0"
-                       TextWrapping="Wrap"
-                       Text="Bank - Account Overview"
-                       VerticalAlignment="Top"
-                       Width="780"
-                       FontSize="26.667" />
+                       Text="{extensions:TranslatorExtension Key=ApplicationName, Default=Welcome}"
+                       FontSize="40"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"></TextBlock>
             <TextBlock HorizontalAlignment="Left"
                        Margin="10,10,0,0"
                        Grid.Row="1"
